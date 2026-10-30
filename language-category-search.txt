@@ -1,0 +1,104 @@
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\CatalogPanel.tsx
+LINE: 70
+CODE: return products.filter((p) => p.categoryId && ids.has(p.categoryId));
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\CatalogPanel.tsx
+LINE: 146
+CODE: initialCategoryId={selectedId}
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\ProductForm.tsx
+LINE: 13
+CODE: initialCategoryId?: string | null;
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\ProductForm.tsx
+LINE: 19
+CODE: | "sku" | "name" | "description" | "unitPrice" | "quantity" | "reorderLevel" | "categoryId"
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\ProductForm.tsx
+LINE: 36
+CODE: function initialDraft(p?: CatalogProduct, categoryId?: string | null): Draft {
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\ProductForm.tsx
+LINE: 44
+CODE: categoryId: p?.categoryId ?? categoryId ?? "",
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\ProductForm.tsx
+LINE: 57
+CODE: export default function ProductForm({ lang, tree, product, initialCategoryId, onSaved, onCancel }: Props) {
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\ProductForm.tsx
+LINE: 60
+CODE: const [draft, setDraft] = useState<Draft>(() => initialDraft(product, initialCategoryId));
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\ProductForm.tsx
+LINE: 77
+CODE: const currentMissing = draft.categoryId && !options.some((o) => o.id === draft.categoryId);
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\ProductForm.tsx
+LINE: 87
+CODE: if (!draft.categoryId) return t.categoryNeeded;
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\ProductForm.tsx
+LINE: 88
+CODE: const leaf = options.find((o) => o.id === draft.categoryId)?.leaf;
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\ProductForm.tsx
+LINE: 160
+CODE: categoryId: draft.categoryId,
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\ProductForm.tsx
+LINE: 275
+CODE: <select value={draft.categoryId} onChange={(e) => set("categoryId")(e.target.value)} required>
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\components\ProductForm.tsx
+LINE: 277
+CODE: {currentMissing && <option value={draft.categoryId}>{t.disabled}</option>}
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\lib\assistant-i18n.ts
+LINE: 32
+CODE: subtitle: "Ask in Amharic or English · send images, files or photos",
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\lib\assistant-i18n.ts
+LINE: 70
+CODE: subtitle: "Afaan Oromoo, Amaaraa ykn Ingiliizii gaafadhu · suuraa, faayilii ykn fakkii ergi",
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\lib\catalog-i18n.ts
+LINE: 4
+CODE: catalog: "Categories & products",
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\lib\catalog-i18n.ts
+LINE: 16
+CODE: chooseCategory: "Choose a category",
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\lib\catalog-i18n.ts
+LINE: 36
+CODE: nameAm: "Name (Amharic)",
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\lib\catalog-i18n.ts
+LINE: 38
+CODE: nameOm: "Name (Afaan Oromoo)",
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\lib\catalog-i18n.ts
+LINE: 39
+CODE: nameTi: "Name (Tigrinya)",
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\lib\catalog-i18n.ts
+LINE: 184
+CODE: nameOm: "Maqaa (Afaan Oromoo)",
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\lib\catalog-i18n.ts
+LINE: 185
+CODE: nameTi: "Maqaa (Tigrinyaa)",
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\lib\categories.ts
+LINE: 31
+CODE: categoryId: string | null;
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\lib\categories.ts
+LINE: 46
+CODE: * The name in the chosen language. If that language has no name yet, fall back to English, then Amharic.
+----------------------------------------
+FILE: D:\ጥበብ (TIBEB AI)\New folder\KaluSmart_Trade_Phase9_partial\KaluSmart Trade\apps\web\lib\i18n.ts
+LINE: 5
+CODE: { code: "om", name: "Afaan Oromoo" },
+----------------------------------------

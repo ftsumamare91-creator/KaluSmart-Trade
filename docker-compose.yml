@@ -1,0 +1,42 @@
+# Usage: copy .env.example to .env, set POSTGRES_PASSWORD, then: docker compose up --build
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: kalusmart_trade
+      POSTGRES_USER: kalusmart
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kalusmart -d kalusmart_trade"]
+      interval: 5s
+      retries: 10
+
+  ai:
+    build: ./apps/ai-service
+    env_file: ./apps/ai-service/.env
+    ports: ["8000:8000"]
+
+  api:
+    build: ./apps/api
+    env_file: ./apps/api/.env
+    environment:
+      DATABASE_URL: postgresql://kalusmart:${POSTGRES_PASSWORD}@postgres:5432/kalusmart_trade?schema=public
+      AI_SERVICE_URL: http://ai:8000
+    depends_on:
+      postgres: { condition: service_healthy }
+      ai: { condition: service_started }
+    ports: ["4000:4000"]
+
+  web:
+    build:
+      context: ./apps/web
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:4000/api
+        NEXT_PUBLIC_AI_URL: http://localhost:8000
+    depends_on: [api]
+    ports: ["3000:3000"]
+
+volumes:
+  pgdata:

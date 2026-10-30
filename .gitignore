@@ -1,0 +1,42 @@
+node_modules/
+.next/
+dist/
+coverage/
+.venv/
+__pycache__/
+*.py[cod]
+*.tsbuildinfo
+
+.env
+.env.*
+!.env.example
+
+apps/api/prisma/*.db
+apps/api/uploads/
+apps/ai-service/.en
+uploads/
+
+# Local backups
+backup-*/
+backups/
+design-backup-*/
+design-backups/
+web-backup-*/
+apps/web/auth-backup-*/
+
+# Local build/debug files
+apps/web/build-error-log.txt
+.DS_Store
+t-Path .package.json
+
+# Temporary source backups
+*.bak
+
+# Temporary backup files
+*.backup
+*.backup-*
+*.before-*
+*.bak-*
+*.translation-fix-backup
+*.backup
+*-backup
