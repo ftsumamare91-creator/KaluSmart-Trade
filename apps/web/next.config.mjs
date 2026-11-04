@@ -1,5 +1,15 @@
 const nextConfig = {
   reactStrictMode: true,
-  output: "standalone", // self-contained server for the Docker image
-}
+  output: "standalone",
+
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "https://kalusmart-trade-api.onrender.com/api/:path*",
+      },
+    ];
+  },
+};
+
 export default nextConfig;
