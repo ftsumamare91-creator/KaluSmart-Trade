@@ -70,10 +70,9 @@ export default function DashboardOverview({ role, lang = "en" }: { role?: string
     const qs = `from=${from}&to=${to}`;
     const list: [string, string][] = [
       ["inventory", "/analytics/inventory?limit=5"],
-      ["products", `/analytics/products?${qs}&limit=5`],
     ];
     if (finance) {
-      list.push(["overview", `/analytics/overview?${qs}`], ["series", `/analytics/timeseries?${qs}&granularity=${gran}`], ["customers", "/analytics/top-balances?limit=5"], ["suppliers", "/ledger/payables"]);
+      list.push(["products", `/analytics/products?${qs}&limit=5`], ["overview", `/analytics/overview?${qs}`], ["series", `/analytics/timeseries?${qs}&granularity=${gran}`], ["customers", "/analytics/top-balances?limit=5"], ["suppliers", "/ledger/payables"]);
     }
     return list;
   }, [from, to, gran, finance]);
@@ -157,6 +156,7 @@ export default function DashboardOverview({ role, lang = "en" }: { role?: string
       )}
 
       <section className="dashboard-grid">
+        {finance && (
         <article className="panel">
           <div className="panel-head"><div><h2>{dt(lang, "Best-selling products")}</h2><p>{dt(lang, "Ranked by sales value in this period")}</p></div></div>
           <Section lang={lang} title={dt(lang, "Best-selling products")} state={states.products ?? { status: "loading" }} onRetry={() => loadOne("products", endpoints.find(([k]) => k === "products")![1])} empty={!!states.products?.data && states.products.data.items.length === 0}>
@@ -167,6 +167,7 @@ export default function DashboardOverview({ role, lang = "en" }: { role?: string
             </ol>
           </Section>
         </article>
+        )}
         <article className="panel">
           <div className="panel-head"><div><h2>{dt(lang, "Low stock")}</h2><p>{states.inventory?.data ? `${states.inventory.data.totals.lowStock} at or below reorder level · ${states.inventory.data.totals.outOfStock} out of stock` : dt(lang, "Stock against reorder levels")}</p></div></div>
           <Section lang={lang} title={dt(lang, "Low stock")} state={states.inventory ?? { status: "loading" }} onRetry={() => loadOne("inventory", "/analytics/inventory?limit=5")} empty={!!states.inventory?.data && states.inventory.data.lowStock.length === 0}>
@@ -196,4 +197,3 @@ export default function DashboardOverview({ role, lang = "en" }: { role?: string
     </div>
   );
 }
-
