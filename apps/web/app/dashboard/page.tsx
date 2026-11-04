@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { api, etb } from "../../lib/api";
+import { api, etb, ApiError } from "../../lib/api";
 import CustomersPanel from "../../components/CustomersPanel";
 import AssistantChat from "../../components/AssistantChat";
 import CatalogPanel from "../../components/CatalogPanel";
@@ -26,7 +26,43 @@ export default function Home() {
   const t = UI[lang];
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
-  useEffect(() => { api<any>("/auth/me").then(setUser).catch((e: any) => { alert("Dashboard authentication check failed: " + (e?.message || String(e))); }); }, [router]);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [authError, setAuthError] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadUser = async () => {
+      setAuthLoading(true);
+      setAuthError("");
+
+      try {
+        const currentUser = await api<any>("/auth/me");
+        if (!cancelled) setUser(currentUser);
+      } catch (error) {
+        if (cancelled) return;
+
+        if (error instanceof ApiError && error.status === 401) {
+          router.replace("/login");
+          return;
+        }
+
+        setAuthError(
+          error instanceof Error
+            ? error.message
+            : "Could not verify your session."
+        );
+      } finally {
+        if (!cancelled) setAuthLoading(false);
+      }
+    };
+
+    void loadUser();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
   const logout = async () => { try { await api("/auth/logout", { method: "POST" }); } catch { /* already signed out */ } router.replace("/login"); };
   useEffect(() => {
     try { const saved = localStorage.getItem("kalu-lang"); setLang(isLang(saved) ? saved : "en"); setDark(localStorage.getItem("kalu-theme") === "dark"); } catch { /* preferences are optional */ }
@@ -36,6 +72,38 @@ export default function Home() {
     document.documentElement.lang = lang;
     try { localStorage.setItem("kalu-theme", dark ? "dark" : "light"); localStorage.setItem("kalu-lang", lang); } catch { /* ignore */ }
   }, [dark, lang]);
+  if (authLoading) {
+    return (
+      <main className="main" style={{ minHeight: "100vh", display: "grid", placeItems: "center" }}>
+        <section className="panel" style={{ textAlign: "center", padding: 32 }}>
+          <h2>Verifying your session…</h2>
+          <p className="demo-note">Please wait while KaluSmart Trade loads your workspace.</p>
+        </section>
+      </main>
+    );
+  }
+
+  if (authError) {
+    return (
+      <main className="main" style={{ minHeight: "100vh", display: "grid", placeItems: "center" }}>
+        <section className="panel" style={{ maxWidth: 480, padding: 32 }}>
+          <h2>Unable to load your dashboard</h2>
+          <p className="error-msg">{authError}</p>
+          <button className="button primary" onClick={() => window.location.reload()}>
+            Retry
+          </button>
+          <button className="button secondary" onClick={() => router.replace("/login")}>
+            Go to Login
+          </button>
+        </section>
+      </main>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+
   const pageTitle = active === "Overview" ? t.welcome : (NAV[lang]?.[active] ?? active);
   const moduleText: Record<string,string> = {"Customers / CRM":"Manage customer relationships, interactions, and sales opportunities.","Documents":"Upload receipts and invoices, extract their fields for review, and keep them with your records.","Inventory & Sales":"Track stock, orders, product performance, and sales activity.","Business Intelligence":"Explore revenue, expenses, margin, and business trends.","Workflow Automation":"Create rules that respond to low stock, new orders, and important business events.","Organizations":"Manage business workspaces and tenant-level access.","Security & Audit":"Review roles, permissions, and important activity records.","Settings":"Configure workspace preferences and integrations.","Help & Support":"Guides and support resources."};
   const sendQuestion = async () => {
@@ -63,6 +131,3 @@ export default function Home() {
     <AskTibebDrawer open={drawerOpen && active!=="AI Assistant"} onClose={()=>setDrawerOpen(false)} lang={lang} role={user?.role}/>
     </div></main></div>;
 }
-
-
-
