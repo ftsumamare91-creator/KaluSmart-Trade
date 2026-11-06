@@ -46,10 +46,12 @@ function googleCookieOptions() {
 }
 
 function setCookie(res: Response, token: string, maxAgeMs: number) {
+  const secure = isSecureCookie();
+
   res.cookie(SESSION_COOKIE, token, {
     httpOnly: true,
-    sameSite: 'lax',
-    secure: isSecureCookie(),
+    sameSite: secure ? 'none' : 'lax',
+    secure,
     maxAge: maxAgeMs,
     path: '/',
   });
